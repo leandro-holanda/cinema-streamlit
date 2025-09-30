@@ -10,12 +10,11 @@ from actors.service import ActorService
 from reviews.service import ReviewService
 
 def main():
-    # Verifica login
+    
     if 'token' not in st.session_state:
         show_login()
         return
 
-    # Sidebar com menu e logout
     st.sidebar.title("🎬 Menu")
     menu_option = st.sidebar.radio(
         "Navegue pelo sistema",
@@ -27,12 +26,10 @@ def main():
         logout()
         st.experimental_rerun()
 
-    # Tela principal
     if menu_option == 'Início':
         st.title("🏠 Dashboard do Cinema")
         st.subheader(f"Bem-vindo(a), {st.session_state.get('user', 'Usuário')}!")
 
-        # Puxando dados
         try:
             movie_service = MovieService()
             genre_service = GenreService()
@@ -44,7 +41,6 @@ def main():
             actors = actor_service.get_actors() or []
             reviews = review_service.get_reviews() or []
 
-            # Estatísticas em cards
             col1, col2, col3, col4 = st.columns(4)
             col1.metric("🎥 Filmes", len(movies))
             col2.metric("📚 Gêneros", len(genres))
@@ -53,7 +49,6 @@ def main():
 
             st.markdown("---")
 
-            # Cards clicáveis (simples via botões)
             st.subheader("Acesso rápido")
             if st.button("🎥 Ir para Filmes"):
                 show_movies()
